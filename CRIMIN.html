@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRIMIN</title>
+
+    <style>
+    .statut {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+    .ok {
+      color: green;
+    }
+    .nok {
+      color: red;
+    }
+  </style>
+    
+</head>
+<body>
+    <h2>CRIMIN</h2>
+
+<button id="sendDataButton">CAPTURER LES EMPREINTES</button>
+<span id="statusFP" class="status"></span>
+
+    <div id="returnDataDisplay"></div>
+
+    <script>
+        const sendDataButton = document.getElementById('sendDataButton');
+        const returnDataDisplay = document.getElementById('returnDataDisplay');
+
+        sendDataButton.addEventListener('click', function() {
+            const jsonData = {
+    "transactionId": "0011223344",
+    "workflow": {
+        "institution": "PN", 
+        "workflowType": "FP_PHOTO",
+        "operationType": "signalisation",
+        "custoNeo": true,
+        "displayRecap": true,
+        "forceStop": false,
+        "postMortem": false
+    },
+    "demographics": {
+        "firstName": "Alice",
+        "lastName": "Smith",
+        "birthDay": "1990-05-15",
+        "extraFields": {
+            "spareField201": "Extra Data 1",
+            "spareField202": "Extra Data 2"
+        }
+    }, 
+    "portraits": {
+        "front": true,
+        "profile": true,
+        "inclinated": false
+    },
+    "fingerPrintCaptureConfig": {
+        "sequence": "SLAP_ROLLED"
+    },
+    "portraitCaptureConfig": {
+        "resolution": "1080p",
+        "maxSize": "200KB"
+    },
+    "logsConfig": {
+        "logsBaseUrl": "https://test.logs.server.fr",
+        "logsPort": 443,
+        "logsMethod": "POST",
+        "logsRequestUrl": "logs/",
+        "logTag": "TAG_APP_1"
+    },
+    "exportConfig": {
+        "exportMethod": {
+            "local": {
+                "enabled": false,
+                "encryptionKey": "ewogICAgInRyYW5zYWN0aW9uSWQiOiAiMDAxMTIyMzM0NCIC-key"
+            },
+            "remote": {
+                "enabled": true,
+                "api": {
+                    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+                    "synchronizeUrl": "https://api.example.com/v1/data/synchronize",
+                    "synchronizePort": 443,
+                    "synchronizeMethod": "POST",
+                    "urlCallback": "https://api.example.com/v1/data/finish?status=",
+                    "certificate": "ewogICAgInRyYW5zYWN0aW9uSWQiOiAiMDAxMTIyMzM0NCIC"
+                }
+            }
+        },
+        "exportFormat": [
+            {
+                "formatType": "JSON"
+            },
+            {
+                "formatType": "NIST"
+            },
+            {
+                "formatType": "JPEG",
+                "template": "DK-template-v1"
+            }
+        ]
+    },
+    "mainApplication": {
+        "name": "CRIMIN",
+        "mainColor": "BLUE",
+        "secondaryColor": "BLUE"
+    }
+};
+
+            const jsonString = JSON.stringify(jsonData);
+            const base64Json = btoa(jsonString);
+            const encodedBase64 = encodeURIComponent(base64Json);
+            const intentUrl = "mcb://capture?workflow_json=" + jsonString;
+
+            window.location.href = intentUrl;
+        });
+
+
+function updateStatusFromUrl() {
+      const params = new URLSearchParams(window.location.search);
+
+      const messageFP = params.get("messageFP");
+
+      if (messageFP) {
+        const spanFP = document.getElementById("statusFP");
+        spanFP.textContent = messageFP;
+        spanFP.className = "statut " + (messageFP.toUpperCase() === "TERMINÉ" ? "ok" : "nok");
+      }
+    }
+
+    // Call on load
+    window.onload = updateStatusFromUrl;
+    </script>
+</body>
+</html>
