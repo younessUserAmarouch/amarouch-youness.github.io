@@ -33,86 +33,77 @@
 
         sendDataButton.addEventListener('click', function() {
             const jsonData = {
-    "transactionId": "0011223344",
-    "workflow": {
-        "institution": "PN", 
-        "workflowType": "FP_PHOTO",
-        "operationType": "signalisation",
-        "custoNeo": true,
-        "displayRecap": true,
-        "forceStop": false,
-        "postMortem": false
-    },
-    "demographics": {
-        "firstName": "Alice",
-        "lastName": "Smith",
-        "birthDay": "1990-05-15",
-        "extraFields": {
-            "spareField201": "Extra Data 1",
-            "spareField202": "Extra Data 2"
-        }
-    }, 
-    "portraits": {
-        "front": true,
-        "profile": true,
-        "inclinated": false
-    },
-    "fingerPrintCaptureConfig": {
-        "sequence": "SLAP_ROLLED"
-    },
-    "portraitCaptureConfig": {
-        "resolution": "1080p",
-        "maxSize": "200KB"
-    },
-    "logsConfig": {
-        "logsBaseUrl": "https://test.logs.server.fr",
-        "logsPort": 443,
-        "logsMethod": "POST",
-        "logsRequestUrl": "logs/",
-        "logTag": "TAG_APP_1"
-    },
-    "exportConfig": {
-        "exportMethod": {
-            "local": {
-                "enabled": false,
-                "encryptionKey": "ewogICAgInRyYW5zYWN0aW9uSWQiOiAiMDAxMTIyMzM0NCIC-key"
-            },
-            "remote": {
-                "enabled": true,
-                "api": {
-                    "jwt": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
-                    "synchronizeUrl": "http://10.121.124.139/v1/data/synchronize",
-                    "synchronizePort": 8095,
-                    "synchronizeMethod": "POST",
-                    "urlCallback": "http://10.121.124.139/v1/data/callback",
-                    "certificate": "ewogICAgInRyYW5zYWN0aW9uSWQiOiAiMDAxMTIyMzM0NCIC"
-                }
-            }
-        },
-        "exportFormat": [
-            {
-                "formatType": "JSON"
-            },
-            {
-                "formatType": "NIST"
-            },
-            {
-                "formatType": "JPEG",
-                "template": "DK-template-v1"
-            }
-        ]
-    },
-    "mainApplication": {
-        "name": "CRIMIN",
-        "mainColor": "BLUE",
-        "secondaryColor": "BLUE"
+  "transactionId": "0011223344",
+  "contractVersion":"1.0",
+  "workflow": {
+    "institution": "PN",
+    "operationType": "signalisation",
+    "custoNeo": false,
+    "displayRecap": true,
+    "forceStop": false,
+    "postMortem": false
+  },
+  "demographics": {
+    "firstName": "Alice",
+    "lastName": "Smith",
+    "birthDay": "1990-05-15"
+  },
+  "fingerPrintCaptureConfig": {
+    "sequence": "SLAP_ROLLED_PALM_LOWER",
+    "bypassThreshold": "2",
+    "palmBypassThreshold": "1"
+  },
+  "logsConfig": {
+    "###### Valeurs possibles : remote, local, none  ######":"",
+    "###### Pour CRIM'IN c'est soit remote soit none  ######":"",
+    "mode": "remote",
+    "remote": {
+      "baseUrl": "https://10.131.172.139",
+      "requestUrl": "/api/rest/mcb/logs",
+      "port": 8443,
+      "logsMethod": "POST",
+      "headers": {
+        "Authorization": "Bearer YOUR_TOKEN",
+        "Content-Type": "application/json",
+        "x-custom-header": "your_value"
+      } ,
+      "certificate": "-----BEGIN CERTIFICATE-----MIIEWzCCAsOgAwIBAgIQNJYFhftsmN1YnqZVLMi2pDANBgkqhkiG9w0BAQsFADCBhzEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50IENBMS4wLAYDVQQLDCVnNTIyOTI1QE1BQ0ExLU1BQzAwMDQubG9jYWwgKEc1MjI5MjUpMTUwMwYDVQQDDCxta2NlcnQgZzUyMjkyNUBNQUNBMS1NQUMwMDA0LmxvY2FsIChHNTIyOTI1KTAeFw0yNjA2MDEwODQxMjJaFw0yODA5MDEwODQxMjJaMFkxJzAlBgNVBAoTHm1rY2VydCBkZXZlbG9wbWVudCBjZXJ0aWZpY2F0ZTEuMCwGA1UECwwlZzUyMjkyNUBNQUNBMS1NQUMwMDA0LmxvY2FsIChHNTIyOTI1KTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMoLxlx1v4ll1v1oE7GmJT9td9BMs/fKkROLFShD7hRt7QQQvR3zKrLaZUll1pdumDuNLJ9D2D2s0Efo9OgODmMSEqh0Zx/Tv0kyMaAnz47N9Aq0N+kg6TsiGHEDH/D9HiGtmSHeXyx1hOrQlJHRQqDX2oWvOmn8pxG7ixWF9gt2VTOIZPU6uIXulMBlDDaatS5hE7RGdV8m2ETaWOP6d9NWz/RTeYbUQR/gcnGTnr2qXEDjrAwq+btNoegAlPCi058dA14z+dx/cwtTZKdSS+KC5Cxb/ca9UeyqxBvOvzX2xa4XkmuzM4PUr+a5UZN+mdX7qC6K18uXbrOz22X3uSUCAwEAAaNwMG4wDgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMB8GA1UdIwQYMBaAFMldIqqEqPqgUER3ggL4HW+I5S8WMCYGA1UdEQQfMB2CCWxvY2FsaG9zdIcEfwAAAYcECoFGjocECgACAjANBgkqhkiG9w0BAQsFAAOCAYEAtSbCQylaHQfaWeU19sA6nwBiSAv8BoPQAVppjZxYF49PLNSdK7WB0OyGMl2pxwtNvXpA+LG9YnL5l63fPlKWFuR3ioKpJIQE9rM7wtJGCi1IwNk0+aNCZngy9WsIaxdb2Fp1xzQlV+prtoVQsHy9vTfQOUsTO8PK74EaXjHzxumx1/hV56ai3+DehGwOiCk798TjIZFehrvsgh8wElccHj56JNOvAMSWojIKtE7Qn5UBjswY76x18apLHqzW2blwaEIU263AyTWJsEWO6MeNRdUnKabkRnCTOexuDEAs8aHSE2gBvbwoVPoOsjuWfnfRtFihZ0b4sr2m5FVuhv8WjG3T2UdAnTXfQsuT9ctmXKEQFFrgDKOV4VLY5+pTUTODW5rxcQvQ3UYNA5G6dOwZENkGChjAHMh1iN+2xUNxu3ehDfPrE6756eI/bqwS41JatNrbGd74VOMBMwmNDWIyeoW4rDeqyUpuV5YyY8vm6rcyadDqFckIpxLJHHT5xgSq-----END CERTIFICATE-----"
     }
+    
+  },
+  "exportConfig": {
+  "###### Valeurs possibles : remote, local ######":"",
+  "mode": "remote",
+  "remote": {
+    "baseUrl": "https://10.131.172.139",
+    "requestUrl": "/api/rest/mcb/empreintes",
+    "port": 8443,
+    "httpMethod": "POST",
+    "###### Les headers attendus par le serveur sont renseignés ici  ######":"",
+    "headers": {
+      "Authorization": "Bearer YOUR_TOKEN",
+      "Content-Type": "application/json",
+      "x-custom-header": "your_value"
+    },
+    "urlCallback": "https://younessuseramarouch.github.io/amarouch-youness.github.io/",
+    "certificate": "-----BEGIN CERTIFICATE-----MIIEWzCCAsOgAwIBAgIQNJYFhftsmN1YnqZVLMi2pDANBgkqhkiG9w0BAQsFADCBhzEeMBwGA1UEChMVbWtjZXJ0IGRldmVsb3BtZW50IENBMS4wLAYDVQQLDCVnNTIyOTI1QE1BQ0ExLU1BQzAwMDQubG9jYWwgKEc1MjI5MjUpMTUwMwYDVQQDDCxta2NlcnQgZzUyMjkyNUBNQUNBMS1NQUMwMDA0LmxvY2FsIChHNTIyOTI1KTAeFw0yNjA2MDEwODQxMjJaFw0yODA5MDEwODQxMjJaMFkxJzAlBgNVBAoTHm1rY2VydCBkZXZlbG9wbWVudCBjZXJ0aWZpY2F0ZTEuMCwGA1UECwwlZzUyMjkyNUBNQUNBMS1NQUMwMDA0LmxvY2FsIChHNTIyOTI1KTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMoLxlx1v4ll1v1oE7GmJT9td9BMs/fKkROLFShD7hRt7QQQvR3zKrLaZUll1pdumDuNLJ9D2D2s0Efo9OgODmMSEqh0Zx/Tv0kyMaAnz47N9Aq0N+kg6TsiGHEDH/D9HiGtmSHeXyx1hOrQlJHRQqDX2oWvOmn8pxG7ixWF9gt2VTOIZPU6uIXulMBlDDaatS5hE7RGdV8m2ETaWOP6d9NWz/RTeYbUQR/gcnGTnr2qXEDjrAwq+btNoegAlPCi058dA14z+dx/cwtTZKdSS+KC5Cxb/ca9UeyqxBvOvzX2xa4XkmuzM4PUr+a5UZN+mdX7qC6K18uXbrOz22X3uSUCAwEAAaNwMG4wDgYDVR0PAQH/BAQDAgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMB8GA1UdIwQYMBaAFMldIqqEqPqgUER3ggL4HW+I5S8WMCYGA1UdEQQfMB2CCWxvY2FsaG9zdIcEfwAAAYcECoFGjocECgACAjANBgkqhkiG9w0BAQsFAAOCAYEAtSbCQylaHQfaWeU19sA6nwBiSAv8BoPQAVppjZxYF49PLNSdK7WB0OyGMl2pxwtNvXpA+LG9YnL5l63fPlKWFuR3ioKpJIQE9rM7wtJGCi1IwNk0+aNCZngy9WsIaxdb2Fp1xzQlV+prtoVQsHy9vTfQOUsTO8PK74EaXjHzxumx1/hV56ai3+DehGwOiCk798TjIZFehrvsgh8wElccHj56JNOvAMSWojIKtE7Qn5UBjswY76x18apLHqzW2blwaEIU263AyTWJsEWO6MeNRdUnKabkRnCTOexuDEAs8aHSE2gBvbwoVPoOsjuWfnfRtFihZ0b4sr2m5FVuhv8WjG3T2UdAnTXfQsuT9ctmXKEQFFrgDKOV4VLY5+pTUTODW5rxcQvQ3UYNA5G6dOwZENkGChjAHMh1iN+2xUNxu3ehDfPrE6756eI/bqwS41JatNrbGd74VOMBMwmNDWIyeoW4rDeqyUpuV5YyY8vm6rcyadDqFckIpxLJHHT5xgSq-----END CERTIFICATE-----"
+  },
+  "formats": ["JSON"]
+},
+  "mainApplication": {
+    "name": "CRIM'IN",
+    "###### Valeurs possible : pwa, native  ######":"",
+    "type": "pwa",
+    "packageName": "com.fsi.crimin",
+    "classeName": "MainActivity",
+    "mainColor": "#A2A2A2",
+    "secondaryColor": "#01377d"
+  }
 };
-
             const jsonString = JSON.stringify(jsonData);
             const base64Json = btoa(jsonString);
             const encodedBase64 = encodeURIComponent(base64Json);
-            const intentUrl = "mcb://capture?workflow_json=" + jsonString;
+            const intentUrl = "intent://capture#Intent;" + "scheme=mcbdk;" + "package=com.idemia.mcb.dk;" + "S.configuration=" + encodedBase64 + ";" + "end";
 
             window.location.href = intentUrl;
         });
